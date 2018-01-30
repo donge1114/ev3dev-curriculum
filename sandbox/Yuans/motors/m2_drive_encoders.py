@@ -34,8 +34,8 @@ def main():
         speed = int(input("Enter a speed for the motor (0 to 900 dps): "))
         left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        left_motor.wait_while(ev3.Motor.STATE_RUNNING)
-        right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        left_motor.run_to_rel_pos.wait_while(ev3.Motor.STATE_RUNNING)
+        right_motor.run_to_rel_pos.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
     print("Goodbye!")
