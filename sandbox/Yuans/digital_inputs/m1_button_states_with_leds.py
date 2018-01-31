@@ -8,7 +8,7 @@ Much like we did in dongbaba of the motors unit, later we will show you differen
 Authors: David Fisher and Shuai Yuan.
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
-# TODO: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
+# DONE: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
 #   You will exit the program by pressing the back button on the EV3 brick (button just below the screen).
 #   The back button is already implemented to exit the program (as you can see in the code below).
 
@@ -53,7 +53,7 @@ def main():
 
     current_color_index = 0
     while True:
-        # TODO: 3. Implement the left, right, and up buttons as follows:
+        # DONE: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
         #      -- print the word "up"
         #      -- turn off all LEDs
@@ -75,33 +75,47 @@ def main():
             ev3.Sound.speak("Off")
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-        if btn.left:
+        elif btn.left:
             print('left')
             ev3.Sound.speak("Left LED Green, Right LED off")
-            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.Green)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-        if btn.right:
+        elif btn.right:
             print('right')
             ev3.Sound.speak("Left LED off, Right LED Red")
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
 
 
-        # TODO: 4. Implement the down button to change the color of both LEDs.
+        # DONE: 4. Implement the down button to change the color of both LEDs.
         #   The first press to down should make both LEDs GREEN, the next press makes them RED, then AMBER, then off.
         #   If the user presses the down button again, wrap around the list to GREEN and continue as before.
         #   If the user holds down the button, figure out how to make the color change still only happen once.
         #   Since you are only allowed to use states, not event callbacks, this last request is a pain, but it's doable
         #     with a while loop that blocks code execution until the down instance variable is False.
         #     Use a time.sleep(0.01) inside the while loop to do nothing but wait for the button to be released.
-        while btn.down:
-            current_color_index = (current_color_index + 1) % len(led_colors)
-            ev3.Leds.set_color(ev3.Leds.LEFT, led_colors[current_color_index])
-            ev3.Leds.set_color(ev3.Leds.RIGHT, led_colors[current_color_index])
-            time.sleep()
+        elif btn.down:
+            print("down")
+            if current_color_index % 4 == 0:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+                time.sleep(0.1)
+            elif current_color_index % 4 == 1:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+                time.sleep(0.1)
+            elif current_color_index % 4 == 2:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+                time.sleep(0.1)
+            elif current_color_index % 4 == 3:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.AMBER)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.AMBER)
+                time.sleep(0.1)
+            current_color_index += 1
+            time.sleep(0.01)
 
-
-        # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
+        # DONE: 5. Formally test your work. When you think you have the problem complete run these tests:
         #   Press Left - Green left LED is on (try holding the button down for a few seconds when you to the press)
         #   Press Right - Right right LED is on
         #   Press Up - Both LEDs are off
