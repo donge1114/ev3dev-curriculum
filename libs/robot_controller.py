@@ -32,10 +32,10 @@ class Snatch3r(object):
         if position < 0:
             speed = -speed
         distance = position * 90
-        left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-        right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-        left_motor.stop()
-        right_motor.stop(stop_action="brake")
+        left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
         left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
