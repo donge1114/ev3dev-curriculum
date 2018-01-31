@@ -15,8 +15,10 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
+
 left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
 right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
 
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
@@ -24,17 +26,20 @@ class Snatch3r(object):
     def __init__(self):
         self.x = 0
 
-    def drive_inches(self, speed, time):
-        left_motor.run_forever(speed_sp=speed)
-        right_motor.run_forever(speed_sp=speed)
-        t = time / (0.012 * speed)
-        time.sleep(t)
+    def drive_inches(self, position, speed):
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        distance = position * 90
+        left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         left_motor.stop()
         right_motor.stop(stop_action="brake")
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         left_motor.run_to_rel_pos(speed_sp=turn_speed_sp, position_sp=-degrees_to_turn, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         right_motor.run_to_rel_pos(speed_sp=turn_speed_sp, position_sp=degrees_to_turn, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-
-        left_motor.run_to_rel_pos.wait_while(ev3.Motor.STATE_RUNNING)
-        right_motor.run_to_rel_pos.wait_while(ev3.Motor.STATE_RUNNING)
+        left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
