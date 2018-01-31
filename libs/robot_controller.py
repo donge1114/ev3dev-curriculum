@@ -21,12 +21,8 @@ right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
 
-    def __init__(self, speed, time, degrees_to_turn, turn_speed_sp):
-        self.speed = speed
-        self.time = time
-        self.degrees_to_turn = degrees_to_turn
-        self.turn_speed_sp = turn_speed_sp
-
+    def __init__(self):
+        self.x = 0
 
     def drive_inches(self, speed, time):
         left_motor.run_forever(speed_sp=speed)
