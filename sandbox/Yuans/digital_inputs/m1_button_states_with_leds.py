@@ -72,13 +72,19 @@ def main():
         #     Just make sure not to comment out too much. ;)
         if btn.up:
             print('up')
-            turn_off_leds()
+            ev3.Sound.speak("Off")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
         if btn.left:
             print('left')
-            left_green_right_off()
+            ev3.Sound.speak("Left LED Green, Right LED off")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.Green)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
         if btn.right:
             print('right')
-            left_off_right_red()
+            ev3.Sound.speak("Left LED off, Right LED Red")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
 
 
         # TODO: 4. Implement the down button to change the color of both LEDs.
@@ -124,22 +130,6 @@ def main():
     ev3.Sound.speak("Goodbye").wait()
 
 
-def turn_off_leds():
-    ev3.Sound.speak("Off")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-
-
-def left_green_right_off():
-    ev3.Sound.speak("Left LED Green, Right LED off")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.Green)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-
-
-def left_off_right_red():
-    ev3.Sound.speak("Left LED off, Right LED Red")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
 
 
 # ----------------------------------------------------------------------
