@@ -24,9 +24,12 @@ class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
 
     def __init__(self):
-        self.x = 0
+        assert left_motor.connected
+        assert right_motor.connected
 
     def drive_inches(self, position, speed):
+        if position < 0:
+            speed = -speed
         left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         distance = position * 90
