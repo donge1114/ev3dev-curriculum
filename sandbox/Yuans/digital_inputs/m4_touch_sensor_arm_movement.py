@@ -3,8 +3,8 @@
 In this module you will use the touch sensor to make arm movements.  Instead of writing code from scratch you will
 fix the existing code, which is FULL of bugs.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Shuai Yuan.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -73,13 +73,14 @@ def arm_calibration(arm_motor, touch_sensor):
     #   Set the arm encoder position to 0 (the last line below is correct to do that, it's new so no bug there)
 
     # Code that attempts to do this task but has MANY bugs (nearly 1 on every line).  Fix them!
-    arm_motor.run_forever(speed_sp=100)
-    while not touch_sensor:
+    arm_motor.run_forever(speed_sp=MAX_SPEED)
+    while not touch_sensor.is_pressed:
         time.sleep(0.01)
-    arm_motor.stop(stop_action="coast")
+    arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+    ev3.Sound.beep().wait()
 
     arm_revolutions_for_full_range = 14.2
-    arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
+    arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range*360, speed_sp=MAX_SPEED, stop_aciton=ev3.Motor.STOP_ACTION_BRAKE)
     arm_motor.wait_while(ev3.Motor.STATE_STALLED)
 
     arm_motor.position = 0  # Calibrate the down position as 0 (this line is correct as is).
@@ -101,10 +102,12 @@ def arm_up(arm_motor, touch_sensor):
     # Make a beep sound
 
     # Code that attempts to do this task but has many bugs.  Fix them!
-    arm_motor.run_to_rel_pos(position_sp=14.2, speed_sp=MAX_SPEED)
-    while touch_sensor.is_pressed:
+    arm_motor.run_to_rel_pos(position_sp=14.2*360, speed_sp=MAX_SPEED)
+    while not touch_sensor.is_pressed:
         time.sleep(0.01)
-    arm_motor.stop()
+    arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+    arm_motor.wait_while(ev3.Motor.STATE_STALLED)
+    ev3.Sound.beep().wait()
 
 
 def arm_down(arm_motor):
@@ -120,8 +123,9 @@ def arm_down(arm_motor):
     # Make a beep sound
 
     # Code that attempts to do this task but has bugs.  Fix them.
-    arm_motor.run_to_abs_pos()
+    arm_motor.run_to_abs_pos(position_sp=-14.2*360, speed=MAX_SPEED, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
     arm_motor.wait_while(ev3.Motor.STATE_HOLDING)  # Blocks until the motor finishes running
+    ev3.Sound.beep().wait()
 
     # TODO: 6. After you fix the bugs in the three arm movement commands demo your code to a TA or instructor.
     #
