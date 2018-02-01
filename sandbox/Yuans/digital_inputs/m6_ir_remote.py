@@ -37,6 +37,11 @@ import robot_controller as robo
 # TODO: 3. Have someone on your team run this program on the EV3 and make sure everyone understands the code.
 # Can you see what the robot does and explain what each line of code is doing? Talk as a group to make sure.
 
+left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+arm_motor = ev3.LargeMotor(ev3.OUTPUT_A)
+touch_sensor = ev3.TouchSensor()
+
 
 class DataContainer(object):
     """ Helper class that might be useful to communicate between different callbacks."""
@@ -66,10 +71,24 @@ def main():
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
+    rc1 = ev3.RemoteControl(chanel=1)
+    rc2 = ev3.RemoteControl(chanel=2)
+    rc1.on_red_up = lambda state: handle_left_motor_forward(state)
+    rc1.on_red_down = lambda state: handle_left_motor_backward(state)
+    rc1.on_blue_up = lambda state: handle_right_motor_forward(state)
+    rc1.on_blue_down = lambda state: handle_right_motor_backward(state)
+
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
+    rc2.on_blue_down = lambda state: handle_shutdown(state, dc)
+
     robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
+        rc1.process()
+        rc2.process()
         btn.process()
         time.sleep(0.01)
 
@@ -86,6 +105,40 @@ def main():
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
 # TODO: 6. Implement the IR handler callbacks handlers.
+
+
+def handle_left_motor_forward(button_state):
+    if button_state:
+        left_motor.run_forever(speed_sp=800)
+        time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="break")
+
+
+def handle_left_motor_backward(button_state):
+    if button_state:
+        left_motor.run_forever(speed_sp=-800)
+        time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="break")
+
+
+def handle_right_motor_forward(button_state):
+    if button_state:
+        right_motor.run_forever(speed_sp=800)
+        time.sleep(0.01)
+    else:
+        right_motor.stop(stop_action="break")
+
+
+def handle_right_motor_backward(button_state):
+    if button_state:
+        right_motor.run_forever(speed_sp=-800)
+        time.sleep(0.01)
+    else:
+        right_motor.stop(stop_action="break")
+
+
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
