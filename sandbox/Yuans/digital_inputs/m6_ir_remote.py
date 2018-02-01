@@ -107,28 +107,33 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 
-def handle_left_motor_forward(button_state):
-    while button_state:
+def handle_red_up_1(button_state):
+    if button_state:
         left_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="brake")
 
-
-def handle_left_motor_backward(button_state):
-    while button_state:
+def handle_red_down_1(button_state):
+    if button_state:
         left_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="brake")
 
-
-def handle_right_motor_forward(button_state):
-    while button_state:
+def handle_blue_up_1(button_state):
+    if button_state:
         right_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
+    else:
+        right_motor.stop(stop_action="brake")
 
-
-def handle_right_motor_backward(button_state):
-    while button_state:
+def handle_blue_down_1(button_state):
+    if button_state:
         right_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
+    else:
+        right_motor.stop(stop_action="brake")
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
