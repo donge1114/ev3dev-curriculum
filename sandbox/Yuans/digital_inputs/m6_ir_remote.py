@@ -83,7 +83,7 @@ def main():
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
     rc2.on_blue_down = lambda state: handle_shutdown(state, dc)
 
-    robot.arm_calibration()  # Start with an arm calibration in this program.
+    # robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
@@ -107,28 +107,28 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 
-def handle_red_up_1(button_state):
+def handle_left_motor_forward(button_state):
     if button_state:
         left_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
     else:
         left_motor.stop(stop_action="brake")
 
-def handle_red_down_1(button_state):
+def handle_left_motor_backward(button_state):
     if button_state:
         left_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
     else:
         left_motor.stop(stop_action="brake")
 
-def handle_blue_up_1(button_state):
+def handle_right_motor_forward(button_state):
     if button_state:
         right_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
     else:
         right_motor.stop(stop_action="brake")
 
-def handle_blue_down_1(button_state):
+def handle_right_motor_backward(button_state):
     if button_state:
         right_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
