@@ -15,9 +15,8 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
-
-arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
 touch_sensor = ev3.TouchSensor()
+
 
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
@@ -47,27 +46,27 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def arm_up(self):
-        arm_motor.run_forever(speed_sp=900)
+        self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
-        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep()
 
     def arm_down(self):
         arm_revolutions_for_full_range = 14.2 * 360
-        arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
-        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
-        arm_motor.position = 0
+        self.arm_motor.position = 0
 
     def arm_calibration(self):
-        arm_motor.run_forever(speed_sp=900)
+        self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
-        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
 
         arm_revolutions_for_full_range = 14.2 * 360
-        arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
-        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
-        arm_motor.position = 0
+        self.arm_motor.position = 0
