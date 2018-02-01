@@ -15,8 +15,7 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
-left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
 arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
 touch_sensor = ev3.TouchSensor()
 
@@ -26,6 +25,7 @@ class Snatch3r(object):
     def __init__(self):
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        self.arm_motor = ev3.LargeMotor(ev3.OUTPUT_A)
 
 
     def drive_inches(self, position, speed):
