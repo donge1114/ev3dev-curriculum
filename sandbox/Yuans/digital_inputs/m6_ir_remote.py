@@ -71,8 +71,8 @@ def main():
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
-    rc1 = ev3.RemoteControl(chanel=1)
-    rc2 = ev3.RemoteControl(chanel=2)
+    rc1 = ev3.RemoteControl(channel=1)
+    rc2 = ev3.RemoteControl(channel=2)
     rc1.on_red_up = lambda state: handle_left_motor_forward(state)
     rc1.on_red_down = lambda state: handle_left_motor_backward(state)
     rc1.on_blue_up = lambda state: handle_right_motor_forward(state)
@@ -97,7 +97,7 @@ def main():
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
     # Once the library is implemented any team member should be able to run his code as stated in todo3.
-    robot.shutdown()
+    # robot.shutdown()
 
 # ----------------------------------------------------------------------
 # Event handlers
@@ -108,36 +108,27 @@ def main():
 
 
 def handle_left_motor_forward(button_state):
-    if button_state:
+    while button_state:
         left_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
-    else:
-        left_motor.stop(stop_action="break")
 
 
 def handle_left_motor_backward(button_state):
-    if button_state:
+    while button_state:
         left_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
-    else:
-        left_motor.stop(stop_action="break")
 
 
 def handle_right_motor_forward(button_state):
-    if button_state:
+    while button_state:
         right_motor.run_forever(speed_sp=800)
         time.sleep(0.01)
-    else:
-        right_motor.stop(stop_action="break")
 
 
 def handle_right_motor_backward(button_state):
-    if button_state:
+    while button_state:
         right_motor.run_forever(speed_sp=-800)
         time.sleep(0.01)
-    else:
-        right_motor.stop(stop_action="break")
-
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
@@ -195,4 +186,6 @@ def handle_shutdown(button_state, dc):
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
+
+
 main()
