@@ -39,7 +39,7 @@ import robot_controller as robo
 
 left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
 right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-arm_motor = ev3.LargeMotor(ev3.OUTPUT_A)
+arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
 touch_sensor = ev3.TouchSensor()
 
 
