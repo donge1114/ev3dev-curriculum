@@ -35,7 +35,6 @@ Authors: David Fisher and Shuai Yuan.
 import ev3dev.ev3 as ev3
 import robot_controller as robo
 
-
 def main():
     # --------------------------------------------------------------
     # We have already implemented this module for you.
