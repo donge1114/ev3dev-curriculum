@@ -32,8 +32,10 @@ class Snatch3r(object):
         if position < 0:
             speed = -speed
         distance = position * 90
-        left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-        right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
+        left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance,
+                                  stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance,
+                                   stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         left_motor.stop()
         right_motor.stop(stop_action="brake")
 
