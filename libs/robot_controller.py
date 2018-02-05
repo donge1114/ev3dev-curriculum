@@ -65,41 +65,30 @@ class Snatch3r(object):
 
     def arm_calibration(self):
         arm_motor.run_forever(speed_sp=900)
-
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
-            arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            arm_revolutions_for_full_range = 14.2 * 360
-            arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
-            arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-            ev3.Sound.beep()
-            arm_motor.position = 0
+        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        ev3.Sound.beep().wait()
 
-    def arm_up(self):
-        arm_motor.run_forever(speed_sp=900)
-
-        while not touch_sensor.is_pressed:
-            time.sleep(0.01)
-            arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            ev3.Sound.beep()
-
-    def arm_down(self,turn_speed_sp,degrees_to_turn):
-        arm_revolutions_for_full_range = 14.2 * 360
-
-
-        arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range)
+        arm_motor.run_to_rel_pos(position_sp=-14.2*360, speed_sp=900)
         arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-        ev3.Sound.beep()
+        ev3.Sound.beep().wait()
+
         arm_motor.position = 0
 
-        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-        left_motor.run_to_rel_pos(speed_sp=turn_speed_sp,
-                                    position_sp=-degrees_to_turn,
-                                    stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        right_motor.run_to_rel_pos(speed_sp=turn_speed_sp,
-                                    position_sp=degrees_to_turn,
-                                    stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        left_motor.wait_while(ev3.Motor.STATE_RUNNING)
-        right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+    def arm_up(self):
+        """Moves arm up to the MAX position."""
+        touch_sensor = ev3.TouchSensor()
+        arm_motor.run_to_abs_pos(position_sp=14.2 * 360, speed_sp=900)
+        while not touch_sensor.is_pressed:
+            time.sleep(0.01)
+        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
+
+    def arm_down(self):
+        """Moves the arms down back to the MIN position."""
+        arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
+        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+
