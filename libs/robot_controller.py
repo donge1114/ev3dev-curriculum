@@ -12,83 +12,100 @@
 """
 
 import ev3dev.ev3 as ev3
-import math
 import time
-
-left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-arm_motor=ev3.MediumMotor(ev3.OUTPUT_A)
-touch_sensor=ev3.TouchSensor()
-assert right_motor.connected
-assert left_motor.connected
-assert arm_motor.connected
-
+import math
 
 
 class Snatch3r(object):
-    """Commands for the Snatch3r robot that might be useful in many different programs."""
 
     def __init__(self):
-
-
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-        self.arm_motor = ev3.LargeMotor(ev3.OUTPUT_A)
 
-    def drive_inches(self, position, speed):
-        if position < 0:
-            speed = -speed
-            distance = position * 90
-            self.left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance,
-                                            stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            self.right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance,
-                                            stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
-            self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
-            left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-            right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-            left_motor.stop()
-            right_motor.stop(stop_action="brake")
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+
+        assert self.arm_motor.connected
+
+        self.touch_sensor = ev3.TouchSensor()
+        assert self.touch_sensor.connected
 
 
-    def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+    def drive_inches(self, inches, speed):
 
+        """ Moves the robot forward the requested number of inches at a speed in degrees / second."""
 
-        self.left_motor.run_to_rel_pos(speed_sp=turn_speed_sp,
-                                            position_sp=-degrees_to_turn * 450 / 90)
-        self.right_motor.run_to_rel_pos(speed_sp=turn_speed_sp,
-                                         position_sp=degrees_to_turn * 450 / 90)
+        degrees_per_inch = 90
+        degrees = inches * degrees_per_inch
+        self.left_motor.run_to_rel_pos(position_sp=degrees, speed_sp=speed, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.right_motor.run_to_rel_pos(position_sp=degrees, speed_sp=speed, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+
+    def drive(self, left_sp, right_sp):
+        self.left_motor.run_forever(speed_sp=left_sp)
+        self.right_motor.run_forever(speed_sp=right_sp)
+
+    def drive_to_point(self, x, y):
+        d_x=x
+        d_y=y
+        destangle= math.atan2(y,x)
+        d_angle=destangle-self.angle
+        degrees_turn= d_angle*(180/math.pi)
+        self.turn_degree(degrees_turn,300)
+        distance=math.sqrt((d_x**2)+(d_y**2))
+        self.drive_inches(distance,300)
+        self.angle=destangle
+        self.x= x
+        self.y= y
+
+    def turn_degree(self, degree, speed):
+        """Moves the robot to a given degree at a given speed."""
+        self.left_motor.run_to_rel_pos(position_sp=degree*5, speed_sp=speed)
+        self.right_motor.run_to_rel_pos(position_sp=-degree*5, speed_sp=speed)
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
+    def stop(self):
+        self.right_motor.stop()
+        self.left_motor.stop()
 
     def arm_calibration(self):
-        arm_motor.run_forever(speed_sp=900)
+        """Moves the arm up and then back down to recalibrate it."""
+        touch_sensor = ev3.TouchSensor()
+        self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
-        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()
 
-        arm_motor.run_to_rel_pos(position_sp=-14.2*360, speed_sp=900)
-        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.run_to_rel_pos(position_sp=-5112, speed_sp=900)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
-        arm_motor.position = 0
+        self.arm_motor.position = 0
 
     def arm_up(self):
         """Moves arm up to the MAX position."""
         touch_sensor = ev3.TouchSensor()
-        arm_motor.run_to_abs_pos(position_sp=14.2 * 360, speed_sp=900)
+        self.arm_motor.run_to_abs_pos(position_sp=14.2 * 360, speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
-        arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
     def arm_down(self):
         """Moves the arms down back to the MIN position."""
-        arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
-        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
+    def shutdown(self):
+        """Shutdown the program"""
+        btn = ev3.Button()
+        while btn.backspace:
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Sound.speak('goodbye').wait()
+            print('Goodbye')
