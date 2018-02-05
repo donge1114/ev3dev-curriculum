@@ -109,31 +109,38 @@ def main():
 
 def handle_left_motor_forward(button_state):
     if button_state:
-        left_motor.run_forever(speed_sp=800)
-        time.sleep(0.01)
+        left_motor.run_forever(speed_sp=600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
     else:
-        left_motor.stop(stop_action="brake")
+        left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+
 
 def handle_left_motor_backward(button_state):
     if button_state:
-        left_motor.run_forever(speed_sp=-800)
-        time.sleep(0.01)
+        left_motor.run_forever(speed_sp=-600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
     else:
-        left_motor.stop(stop_action="brake")
+        left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+
 
 def handle_right_motor_forward(button_state):
     if button_state:
-        right_motor.run_forever(speed_sp=800)
-        time.sleep(0.01)
+        right_motor.run_forever(speed_sp=600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
     else:
-        right_motor.stop(stop_action="brake")
+        right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+
 
 def handle_right_motor_backward(button_state):
     if button_state:
-        right_motor.run_forever(speed_sp=-800)
-        time.sleep(0.01)
+        right_motor.run_forever(speed_sp=-600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
     else:
-        right_motor.stop(stop_action="brake")
+        right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
