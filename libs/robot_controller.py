@@ -21,47 +21,32 @@ class Snatch3r(object):
     def __init__(self):
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
-
         assert self.arm_motor.connected
-
         self.touch_sensor = ev3.TouchSensor()
         assert self.touch_sensor.connected
 
 
-    def drive_inches(self, inches, speed):
-
-        """ Moves the robot forward the requested number of inches at a speed in degrees / second."""
-
-        degrees_per_inch = 90
-        degrees = inches * degrees_per_inch
-        self.left_motor.run_to_rel_pos(position_sp=degrees, speed_sp=speed, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        self.right_motor.run_to_rel_pos(position_sp=degrees, speed_sp=speed, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-
-    def drive(self, left_sp, right_sp):
-        self.left_motor.run_forever(speed_sp=left_sp)
-        self.right_motor.run_forever(speed_sp=right_sp)
-
-    def drive_to_point(self, x, y):
-        d_x=x
-        d_y=y
-        destangle= math.atan2(y,x)
-        d_angle=destangle-self.angle
-        degrees_turn= d_angle*(180/math.pi)
-        self.turn_degree(degrees_turn,300)
-        distance=math.sqrt((d_x**2)+(d_y**2))
-        self.drive_inches(distance,300)
-        self.angle=destangle
-        self.x= x
-        self.y= y
+    def drive_inches(self, distance, speed):
+        if position < 0:
+            speed = -speed
+            distance = position * 90
+            self.left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+            self.right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance, stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+            self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+            self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
+        self.right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
+        self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.left_motor.stop(stop_action="brake")
+        self.right_motor.stop(stop_action="brake")
 
     def turn_degree(self, degree, speed):
-        """Moves the robot to a given degree at a given speed."""
-        self.left_motor.run_to_rel_pos(position_sp=degree*5, speed_sp=speed)
-        self.right_motor.run_to_rel_pos(position_sp=-degree*5, speed_sp=speed)
+        self.left_motor.run_to_rel_pos(position_sp=degree*450/90, speed_sp=speed)
+        self.right_motor.run_to_rel_pos(position_sp=-degree*450/90, speed_sp=speed)
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
@@ -71,7 +56,6 @@ class Snatch3r(object):
         self.left_motor.stop()
 
     def arm_calibration(self):
-        """Moves the arm up and then back down to recalibrate it."""
         touch_sensor = ev3.TouchSensor()
         self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
@@ -86,9 +70,8 @@ class Snatch3r(object):
         self.arm_motor.position = 0
 
     def arm_up(self):
-        """Moves arm up to the MAX position."""
         touch_sensor = ev3.TouchSensor()
-        self.arm_motor.run_to_abs_pos(position_sp=14.2 * 360, speed_sp=900)
+        self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
         self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
@@ -96,7 +79,6 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def arm_down(self):
-        """Moves the arms down back to the MIN position."""
         self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
