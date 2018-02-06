@@ -97,7 +97,7 @@ def main():
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
     # Once the library is implemented any team member should be able to run his code as stated in todo3.
-    # robot.shutdown()
+    robot.shutdown()
 
 # ----------------------------------------------------------------------
 # Event handlers
@@ -184,7 +184,7 @@ def handle_calibrate_button(button_state, robot):
         robot.arm_calibration()
 
 
-def handle_shutdown(button_state, dc):
+def handle_shutdown(button_state, robot, dc):
     """
     Exit the program.
 
@@ -194,6 +194,8 @@ def handle_shutdown(button_state, dc):
     """
     if button_state:
         dc.running = False
+
+
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
