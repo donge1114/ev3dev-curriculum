@@ -69,7 +69,7 @@ def main():
 
     # For our standard shutdown button.
     btn = ev3.Button()
-    btn.on_backspace = lambda state: handle_shutdown(state, dc)
+    btn.on_backspace = lambda state: handle_shutdown(state, robot, dc)
 
     rc1 = ev3.RemoteControl(channel=1)
     rc2 = ev3.RemoteControl(channel=2)
@@ -97,7 +97,6 @@ def main():
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
     # Once the library is implemented any team member should be able to run his code as stated in todo3.
-    robot.shutdown()
 
 # ----------------------------------------------------------------------
 # Event handlers
@@ -193,6 +192,7 @@ def handle_shutdown(button_state, robot, dc):
       :type dc: DataContainer
     """
     if button_state:
+        robot.shutdown()
         dc.running = False
 
 
