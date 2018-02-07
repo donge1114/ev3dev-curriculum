@@ -27,9 +27,16 @@ class Snatch3r(object):
         assert self.arm_motor.connected
         self.touch_sensor = ev3.TouchSensor()
         assert self.touch_sensor.connected
-
+        self.color_sensor = ev3.ColorSensor()
+        assert self.color_sensor
+        self.ir_sensor = ev3.InfraredSensor()
+        assert self.ir_sensor
+        self.pixy = ev3.Sensor(driver_name="pixy-lego")
+        assert self.pixy
 
     def drive_inches(self, distance, speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
         if position < 0:
             speed = -speed
             distance = position * 90
@@ -45,6 +52,8 @@ class Snatch3r(object):
         self.right_motor.stop(stop_action="brake")
 
     def turn_degree(self, degree, speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
         self.left_motor.run_to_rel_pos(position_sp=degree*450/90, speed_sp=speed)
         self.right_motor.run_to_rel_pos(position_sp=-degree*450/90, speed_sp=speed)
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
@@ -52,24 +61,26 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def stop(self):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
         self.right_motor.stop()
         self.left_motor.stop()
 
     def arm_calibration(self):
+        assert self.arm_motor.connected
         touch_sensor = ev3.TouchSensor()
         self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
             time.sleep(0.01)
         self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()
-
         self.arm_motor.run_to_rel_pos(position_sp=-5112, speed_sp=900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
-
         self.arm_motor.position = 0
 
     def arm_up(self):
+        assert self.arm_motor.connected
         touch_sensor = ev3.TouchSensor()
         self.arm_motor.run_forever(speed_sp=900)
         while not touch_sensor.is_pressed:
@@ -79,15 +90,39 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def arm_down(self):
+        assert self.arm_motor.connected
         self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
     def shutdown(self):
-        """Shutdown the program"""
         btn = ev3.Button()
         while btn.backspace:
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
             ev3.Sound.speak('goodbye').wait()
             print('Goodbye')
+
+    def go_forward(self, left_motor_speed, right_motor_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.left_motor.run_forever(speed_sp=left_motor_speed)
+        self.right_motor.run_forever(speed_sp=right_motor_speed)
+
+    def go_back(self, left_motor_speed, right_motor_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.left_motor.run_forever(speed_sp=-left_motor_speed)
+        self.right_motor.run_forever(speed_sp=-right_motor_speed)
+
+    def turn_right(self, left_motor_speed, right_motor_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.left_motor.run_forever(speed_sp=left_motor_speed)
+        self.left_motor.run_forever(speed_sp=-right_motor_speed)
+
+    def turn_left(self, left_motor_speed, right_motor_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.left_motor.run_forever(speed_sp=-left_motor_speed)
+        self.left_motor.run_forever(speed_sp=right_motor_speed)
