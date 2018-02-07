@@ -33,6 +33,8 @@ class Snatch3r(object):
         assert self.pixy
 
     def drive_inches(self, distance, speed):
+        """make the robot drive a given distane by a given speed, if the
+        distance is negative, robot drive backward by the same speed."""
         assert self.left_motor.connected
         assert self.right_motor.connected
         if distance < 0:
@@ -44,6 +46,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degree(self, degree, speed):
+        """make the robot turn a certain degree at give speed """
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_to_rel_pos(position_sp=degree*450/90, speed_sp=speed)
@@ -53,12 +56,14 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def stop(self):
+        """stop the left and right motor of the robots"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.stop()
         self.left_motor.stop()
 
     def arm_calibration(self):
+        """calibrate the robot arm """
         assert self.arm_motor.connected
         touch_sensor = ev3.TouchSensor()
         self.arm_motor.run_forever(speed_sp=900)
@@ -72,6 +77,7 @@ class Snatch3r(object):
         self.arm_motor.position = 0
 
     def arm_up(self):
+        """make the robot's arm going up"""
         assert self.arm_motor.connected
         touch_sensor = ev3.TouchSensor()
         self.arm_motor.run_forever(speed_sp=900)
@@ -82,12 +88,15 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def arm_down(self):
+        """make the robot's arm going down"""
         assert self.arm_motor.connected
         self.arm_motor.run_to_abs_pos(position_sp=0, speed_sp=-900)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
     def shutdown(self):
+        """make the robot shutdown when the ev3's backspace bottom is
+        pressed. and the two led turn green"""
         btn = ev3.Button()
         while btn.backspace:
             self.stop()
@@ -97,24 +106,28 @@ class Snatch3r(object):
             print('Goodbye')
 
     def go_forward(self, left_motor_speed, right_motor_speed):
+        """make the robot run forward forever"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=left_motor_speed)
         self.right_motor.run_forever(speed_sp=right_motor_speed)
 
     def go_back(self, left_motor_speed, right_motor_speed):
+        """maek the robot run backward forever"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
         self.right_motor.run_forever(speed_sp=-right_motor_speed)
 
     def turn_right(self, left_motor_speed, right_motor_speed):
+        """make the robot turn right forever"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=left_motor_speed)
         self.left_motor.run_forever(speed_sp=-right_motor_speed)
 
     def turn_left(self, left_motor_speed, right_motor_speed):
+        """make the robot turn left forever"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
