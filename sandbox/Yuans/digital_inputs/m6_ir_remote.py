@@ -83,7 +83,7 @@ def main():
     rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
-    rc2.on_blue_down = lambda state: handle_shutdown(state, dc)
+    rc2.on_blue_down = lambda state: handle_shutdown(state, robot, dc)
 
     # robot.arm_calibration()  # Start with an arm calibration in this program.
 
