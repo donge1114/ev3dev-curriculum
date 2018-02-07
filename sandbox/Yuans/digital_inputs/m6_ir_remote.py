@@ -37,9 +37,7 @@ import robot_controller as robo
 # DONE: 3. Have someone on your team run this program on the EV3 and make sure everyone understands the code.
 # Can you see what the robot does and explain what each line of code is doing? Talk as a group to make sure.
 
-left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
-arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+
 touch_sensor = ev3.TouchSensor()
 
 
@@ -48,6 +46,10 @@ class DataContainer(object):
 
     def __init__(self):
         self.running = True
+        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+
 
 
 def main():
@@ -106,39 +108,39 @@ def main():
 # DONE: 6. Implement the IR handler callbacks handlers.
 
 
-def handle_left_motor_forward(button_state):
+def handle_left_motor_forward(robot, button_state):
     if button_state:
-        left_motor.run_forever(speed_sp=600)
+        robot.left_motor.run_forever(speed_sp=600)
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
     else:
-        left_motor.stop()
+        robot.left_motor.stop()
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 
-def handle_left_motor_backward(button_state):
+def handle_left_motor_backward(robot, button_state):
     if button_state:
-        left_motor.run_forever(speed_sp=-600)
+        robot.left_motor.run_forever(speed_sp=-600)
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
     else:
-        left_motor.stop()
+        robot.left_motor.stop()
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 
-def handle_right_motor_forward(button_state):
+def handle_right_motor_forward(robot, button_state):
     if button_state:
-        right_motor.run_forever(speed_sp=600)
+        robot.right_motor.run_forever(speed_sp=600)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
     else:
-        right_motor.stop()
+        robot.right_motor.stop()
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
-def handle_right_motor_backward(button_state):
+def handle_right_motor_backward(robot, button_state):
     if button_state:
-        right_motor.run_forever(speed_sp=-600)
+        robot.right_motor.run_forever(speed_sp=-600)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
     else:
-        right_motor.stop()
+        robot.right_motor.stop()
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
