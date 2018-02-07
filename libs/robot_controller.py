@@ -25,8 +25,6 @@ class Snatch3r(object):
         assert self.right_motor.connected
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         assert self.arm_motor.connected
-        self.touch_sensor = ev3.TouchSensor()
-        assert self.touch_sensor.connected
         self.color_sensor = ev3.ColorSensor()
         assert self.color_sensor
         self.ir_sensor = ev3.InfraredSensor()
@@ -98,6 +96,7 @@ class Snatch3r(object):
     def shutdown(self):
         btn = ev3.Button()
         while btn.backspace:
+            self.stop()
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
             ev3.Sound.speak('goodbye').wait()
