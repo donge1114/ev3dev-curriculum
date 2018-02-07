@@ -75,10 +75,10 @@ def main():
 
     rc1 = ev3.RemoteControl(channel=1)
     rc2 = ev3.RemoteControl(channel=2)
-    rc1.on_red_up = lambda state: handle_left_motor_forward(state)
-    rc1.on_red_down = lambda state: handle_left_motor_backward(state)
-    rc1.on_blue_up = lambda state: handle_right_motor_forward(state)
-    rc1.on_blue_down = lambda state: handle_right_motor_backward(state)
+    rc1.on_red_up = lambda state: handle_left_motor_forward(robot, state)
+    rc1.on_red_down = lambda state: handle_left_motor_backward(robot, state)
+    rc1.on_blue_up = lambda state: handle_right_motor_forward(robot, state)
+    rc1.on_blue_down = lambda state: handle_right_motor_backward(robot, state)
 
     rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
