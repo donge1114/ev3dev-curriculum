@@ -57,7 +57,8 @@ def main():
     right_speed_entry.insert(0, "600")
     right_speed_entry.grid(row=1, column=2)
 
-    # TODO: 3. Implement the callbacks for the drive buttons. Set both the click and shortcut key callbacks.
+    # DONE: 3. Implement the callbacks for the drive buttons. Set both the
+    # click and shortcut key callbacks.
     #
     # To help get you started the arm up and down buttons have been implemented.
     # You need to implement the five drive buttons.  One has been writen below to help get you started but is commented
@@ -75,19 +76,27 @@ def main():
     left_button.grid(row=3, column=0)
     # left_button and '<Left>' key
     left_button['command']= lambda: send_left(mqtt_client,left_speed_entry,right_speed_entry)
-    root.bind("<left>",lambda event: send_left(mqtt_client,left_speed_entry,right_speed_entry))
+    root.bind("<Left>",lambda event: send_left(mqtt_client,left_speed_entry,
+                                               right_speed_entry))
 
     stop_button = ttk.Button(main_frame, text="Stop")
     stop_button.grid(row=3, column=1)
     # stop_button and '<space>' key (note, does not need left_speed_entry, right_speed_entry)
     stop_button["command"]=lambda:send_stop(mqtt_client)
+    root.bind("<space>",lambda event:send_stop(mqtt_client))
+
+
     right_button = ttk.Button(main_frame, text="Right")
     right_button.grid(row=3, column=2)
     # right_button and '<Right>' key
+    right_button['command']=lambda event:send_right(mqtt_client,left_speed_entry,right_speed_entry)
+    root.bind("Right",lambda event:send_right(mqtt_client,left_speed_entry,right_speed_entry))
 
     back_button = ttk.Button(main_frame, text="Back")
     back_button.grid(row=4, column=1)
     # back_button and '<Down>' key
+    back_button["command"]=lambda event:send_back(mqtt_client,left_speed_entry,right_speed_entry)
+    root.bind("Back",lambda event:send_back(mqtt_client,left_speed_entry,right_speed_entry))
 
     up_button = ttk.Button(main_frame, text="Up")
     up_button.grid(row=5, column=0)
@@ -121,12 +130,10 @@ def main():
 # Observations you should make, you did basically this same program using the IR Remote, but your computer can be a
 # remote control that can do A LOT more than an IR Remote.  We are just doing the basics here.
 
-
 # Arm command callbacks
 def send_up(mqtt_client):
     print("arm_up")
     mqtt_client.send_message("arm_up")
-
 
 def send_down(mqtt_client):
     print("arm_down")
@@ -139,6 +146,18 @@ def send_forward(mqtt_client, left_speed_entry, right_speed_entry):
 def send_left(mqtt_client,left,right):
     print("left")
     mqtt_client.send_message("turn_left",[left,right])
+
+def send_stop(mqtt_client):
+    print("stop")
+    mqtt_client.send_message("stop")
+
+def send_right(mqtt_client,left,right):
+    print("right")
+    mqtt_client.send_message("turn_right",[left,right])
+
+def send_back(mqtt_client,left,right):
+    print("back")
+    mqtt_client.send_message("go_back",[left,right])
 
 
 
