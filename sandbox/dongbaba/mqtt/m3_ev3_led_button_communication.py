@@ -32,7 +32,7 @@ communication.  Summary of the communication:
 Implement the TODOs below to complete this module, then transfer the file to the EV3 (as done in many previous units),
   then run this module on the EV3 while at the same time, running m3_pc_led_button_communication.py on your PC.
 
-Authors: David Fisher and Enyi Dong.
+Authors: David Fisher and Shuai Yuan.
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 
@@ -72,9 +72,6 @@ class MyDelegate(object):
     def __init__(self):
         self.running = True
 
-    def __init__(self):
-        self.running = True
-
     def set_led(self,led_side_string, led_color_string):
         print("Received: {} {}".format(led_side_string, led_color_string))
         led_side = None
@@ -105,15 +102,13 @@ def main():
     print("--------------------------------------------")
     ev3.Sound.speak("LED Button communication").wait()
 
-    # DONE: 3. Create an instance of your delegate class and an MQTT client,
-    # passing in the delegate object.
+    # TODO: 3. Create an instance of your delegate class and an MQTT client, passing in the delegate object.
     # Note: you can determine the variable names that you should use by looking at the errors underlined in later code.
     # Once you have that done connect the mqtt_client to the MQTT broker using the connect_to_pc method.
     # Note: on EV3 you call connect_to_pc, but in the PC code it will call connect_to_ev3
     my_delegate = MyDelegate()
     mqtt_client = com.MqttClient(my_delegate)
     mqtt_client.connect_to_pc()
-
 
     # Buttons on EV3 (these obviously assume TO DO: 3. is done)
     btn = ev3.Button()
@@ -145,11 +140,10 @@ def handle_button_press(button_state, mqtt_client, button_name):
         #   -- Pass the parameters [button_name] as a list.
         # This is meant to help you learn the mqtt_client.send_message syntax.
         # You can review the code above to understand how button_name is passed into this function.
-        mqtt_client.send_message("button_pressed", [button_name])
+        mqtt_client.send_message('button_pressed', [button_name])
 
 
-# DONE: 5. Run this program on your EV3 and run
-# m3_pc_led_button_communication.py on your PC at the same time.
+# TODO: 5. Run this program on your EV3 and run m3_pc_led_button_communication.py on your PC at the same time.
 # This will be the first time you've run a program on the robot today, but you'll remember how to do it (right?).
 # Hint: To be less confusing use two different computers for this task.  One to run the EV3 program (you) and one to run
 #   the PC program (a different person on your team).  It can be done from one computer but that gets confusing.
