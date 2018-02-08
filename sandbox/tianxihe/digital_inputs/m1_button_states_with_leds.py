@@ -108,13 +108,10 @@ def main():
 
             elif current_color_index % 4 == 3:
                 ev3.Leds.all_off()
+            current_color_index += 1
             while True:
-                btn.process()
-                time.sleep(0.01)
-
-
-        current_color_index += 1
-
+                if btn.down==False:
+                    break
 
 
 
