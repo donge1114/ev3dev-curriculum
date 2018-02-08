@@ -104,6 +104,7 @@ class Snatch3r(object):
         pressed. and the two led turn green"""
         btn = ev3.Button()
         while btn.backspace:
+            """do we need this while loop here?"""
             self.stop()
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
@@ -137,3 +138,11 @@ class Snatch3r(object):
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
         self.left_motor.run_forever(speed_sp=right_motor_speed)
+
+    def shutdown1(self):
+
+        self.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        ev3.Sound.speak('goodbye').wait()
+        print('Goodbye')
