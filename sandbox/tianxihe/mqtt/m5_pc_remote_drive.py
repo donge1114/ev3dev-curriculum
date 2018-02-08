@@ -98,7 +98,8 @@ def main():
     right_button['command']=lambda: send_right(mqtt_client,
                                                 int(left_speed_entry.get()),
                                                int(right_speed_entry.get()))
-    root.bind("Right",lambda event: send_right(mqtt_client,left_speed_entry.get(),
+    root.bind("<Right>",lambda event: send_right(mqtt_client,
+                                                left_speed_entry.get(),
                                                int(right_speed_entry.get())))
 
     back_button = ttk.Button(main_frame, text="Back")
@@ -107,7 +108,7 @@ def main():
     back_button["command"]=lambda: send_back(mqtt_client,
                                              int(left_speed_entry.get()),
                                               int(right_speed_entry.get()))
-    root.bind("Back",lambda event: send_back(mqtt_client,
+    root.bind("<Down>",lambda event: send_back(mqtt_client,
                                              int(left_speed_entry.get()),
                                              int(right_speed_entry.get())))
 
