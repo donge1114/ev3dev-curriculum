@@ -79,7 +79,7 @@ def main():
     rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
-    rc2.on_blue_down = lambda state: handle_shutdown(state, robot, dc)
+    rc2.on_blue_down = lambda state: handle_shutdown(state, dc)
 
     robot.arm_calibration()  # Start with an arm calibration in this program.
 
@@ -103,6 +103,39 @@ def main():
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
 # TODO: 6. Implement the IR handler callbacks handlers.
+
+def handle_right_motor_forward(robot,state):
+    if state:
+        robot.right_motor.run_forever(600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.GREEN)
+    else:
+        robot.right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.BLACK)
+
+def handle_right_motor_backward(robot,state):
+    if state:
+        robot.right_motor.run_forever(-600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
+    else:
+        robot.right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.BLACK)
+
+
+def handle_left_motor_forward(robot,state):
+    if state:
+        robot.left_motor.run_forever(speed_sp=600)
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
+    else:
+        robot.left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.BLACK)
+
+def handle_left_motor_backward(robot,state):
+    if state:
+        robot.left_motor.run_forever(speed_sp=-600)
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.RED)
+    else:
+        robot.left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.BLACK)
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
