@@ -25,6 +25,8 @@
     -- Pressing the Back button will allow your program to end.  It should stop motors, turn on both green LEDs, and
        then print and say Goodbye.  You will need to implement a new robot method called shutdown to handle this task.
 
+
+
 Authors: David Fisher and Tianxi He.
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
@@ -32,6 +34,7 @@ import ev3dev.ev3 as ev3
 import time
 
 import robot_controller as robo
+
 
 # Note that todo2 is farther down in the code.  That method needs to be written before you do todo3.
 # DONE: 3. Have someone on your team run this program on the EV3 and make
@@ -90,12 +93,13 @@ def main():
         btn.process()
         time.sleep(0.01)
 
+
     # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
     # as necessary to implement the method below as per the instructions in the opening doc string. Once the code has
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
     # Once the library is implemented any team member should be able to run his code as stated in todo3.
-    robot.shutdown()
+    robot.shutdown1()
 
 # ----------------------------------------------------------------------
 # Event handlers
@@ -187,6 +191,7 @@ def handle_shutdown(button_state, dc):
       :type dc: DataContainer
     """
     if button_state:
+
         dc.running = False
 
 # ----------------------------------------------------------------------
