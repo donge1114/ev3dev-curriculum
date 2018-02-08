@@ -37,14 +37,18 @@ class Snatch3r(object):
         distance is negative, robot drive backward by the same speed."""
         assert self.left_motor.connected
         assert self.right_motor.connected
+
         if distance < 0:
             speed = -speed
             distance = distance * 90
+        else:
+            distance=distance*90
         self.left_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
-        self.right_motor.run_to_rel_pos(speed_sp=speed, position_sp=distance)
+        self.right_motor.run_to_rel_pos(speed_sp=speed,position_sp=distance)
         """.run_to_rel_pos we dont need the stop action"""
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
 
     def turn_degree(self, degree, speed):
         """make the robot turn a certain degree at give speed """
