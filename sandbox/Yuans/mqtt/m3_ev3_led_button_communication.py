@@ -72,7 +72,7 @@ class MyDelegate(object):
     def __init__(self):
         self.running = True
 
-    def set_led(self,led_side_string, led_color_string):
+    def set_led(self):
         print("Received: {} {}".format(led_side_string, led_color_string))
         led_side = None
         if led_side_string == "left":
