@@ -42,7 +42,8 @@ import ev3dev.ev3 as ev3
 import time
 
 
-# TODO: 2. Within the MyDelegate class below add the method, set_led, to receive messages as described above.
+# DONE: 2. Within the MyDelegate class below add the method, set_led,
+# to receive messages as described above.
 # Here is some code that will likely be VERY useful in that method to convert the led_side_string and led_color_string
 #   into a useful led_side and led_color values that can be used with the ev3.Leds.set_color method.
 #
@@ -68,9 +69,6 @@ import time
 #         ev3.Leds.set_color(led_side, led_color)
 
 class MyDelegate(object):
-
-    def __init__(self):
-        self.running = True
 
     def __init__(self):
         self.running = True
@@ -114,7 +112,6 @@ def main():
     mqtt_client = com.MqttClient(my_delegate)
     mqtt_client.connect_to_pc()
 
-
     # Buttons on EV3 (these obviously assume TO DO: 3. is done)
     btn = ev3.Button()
     btn.on_up = lambda state: handle_button_press(state, mqtt_client, "Up")
@@ -145,11 +142,10 @@ def handle_button_press(button_state, mqtt_client, button_name):
         #   -- Pass the parameters [button_name] as a list.
         # This is meant to help you learn the mqtt_client.send_message syntax.
         # You can review the code above to understand how button_name is passed into this function.
-        mqtt_client.send_message("button_pressed", [button_name])
+        mqtt_client.send_message('button_pressed', [button_name])
 
 
-# DONE: 5. Run this program on your EV3 and run
-# m3_pc_led_button_communication.py on your PC at the same time.
+# TODO: 5. Run this program on your EV3 and run m3_pc_led_button_communication.py on your PC at the same time.
 # This will be the first time you've run a program on the robot today, but you'll remember how to do it (right?).
 # Hint: To be less confusing use two different computers for this task.  One to run the EV3 program (you) and one to run
 #   the PC program (a different person on your team).  It can be done from one computer but that gets confusing.
