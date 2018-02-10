@@ -34,7 +34,6 @@ class Snatch3r(object):
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         assert self.pixy
 
-
     def drive_inches(self, distance, speed):
         """make the robot drive a given distane by a given speed, if the
         distance is negative, robot drive backward by the same speed."""
@@ -105,14 +104,11 @@ class Snatch3r(object):
     def shutdown(self):
         """make the robot shutdown when the ev3's backspace bottom is
         pressed. and the two led turn green"""
-        btn = ev3.Button()
-        while btn.backspace:
-            """do we need this while loop here?"""
-            self.stop()
-            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-            ev3.Sound.speak('goodbye').wait()
-            print('Goodbye')
+        self.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        ev3.Sound.speak('goodbye').wait()
+        print('Goodbye')
 
     def go_forward(self, left_motor_speed, right_motor_speed):
         """make the robot run forward forever"""
@@ -142,14 +138,44 @@ class Snatch3r(object):
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
         self.right_motor.run_forever(speed_sp=right_motor_speed)
 
-    def  loop_forever(self):
+    def loop_forever(self):
         while True:
             time.sleep(0.01)
 
-    def shutdown1(self):
+    def seek_beacon(self):
+        forward_speed = 300
+        turn_speed = 100
+        beacon_seeker = ev3.BeaconSeeker(channel=1)
 
+        while not self.touch_sensor.is_pressed:
+            current_heading = beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                print("IR Remote not found. Distance is -128")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    if current_distance == 0:
+                        self.go_forward(forward_speed, forward_speed)
+                        time.sleep(0.01)
+                        print('found the beacon!')
+                        return True
+                    if current_distance > 0:
+                        self.go_forward(forward_speed, forward_speed)
+                        time.sleep(0.01)
+                if 2 < math.fabs(current_heading) < 10:
+                    if current_heading < -2:
+                        self.turn_right(turn_speed, turn_speed)
+                    if current_heading > 2:
+                        self.turn_left(turn_speed, turn_speed)
+                    print("Adjusting heading: ", current_heading)
+                if math.fabs(current_heading) > 10:
+                    self.stop()
+                    print("Heading is too far off to fix: ", current_heading)
+                    print('Heading too far off')
+            time.sleep(0.2)
+        print("Abandon ship!")
         self.stop()
-        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-        ev3.Sound.speak('goodbye').wait()
-        print('Goodbye')
+        return False
+
