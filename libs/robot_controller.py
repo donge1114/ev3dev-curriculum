@@ -132,7 +132,7 @@ class Snatch3r(object):
         self.right_motor.run_forever(speed_sp=-right_motor_speed)
 
     def turn_left(self, left_motor_speed, right_motor_speed):
-        """make the robot turn left forever   mjhmjnfhchgd"""
+        """make the robot turn left forever"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
