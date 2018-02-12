@@ -106,10 +106,10 @@ def seek_beacon(robot):
 
             if 2 < math.fabs(current_heading) < 10:
                 if current_heading < 0:
-                    robot.turn_right(turn_speed, turn_speed)
+                    robot.turn_left(turn_speed, turn_speed)
                     time.sleep(0.1)
                 if current_heading > 0:
-                    robot.turn_left(turn_speed, turn_speed)
+                    robot.turn_right(turn_speed, turn_speed)
                     time.sleep(0.1)
                 print("Adjusting heading: ", current_heading)
 
