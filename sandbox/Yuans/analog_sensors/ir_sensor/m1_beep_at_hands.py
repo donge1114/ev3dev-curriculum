@@ -9,7 +9,7 @@ Check every 0.1 seconds for a hand and print the proximity value each check.
 Setup the program to continue to run until the user presses the touch sensor.
 
 Authors: David Fisher and Shuai Yuan.  February 2017.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -30,7 +30,7 @@ def main():
     # the code below works to monitor the touch_sensor.
 
     while not robot.touch_sensor.is_pressed:
-        # TODO: 2. Implement the module as described in the opening comment block.
+        # DONE: 2. Implement the module as described in the opening comment block.
         # It is recommended that you add to your Snatch3r class's constructor the ir_sensor, as shown
         #   self.ir_sensor = ev3.InfraredSensor()
         #   assert self.ir_sensor

@@ -89,21 +89,20 @@ def drive_to_color(button_state, robot, color_to_seek):
     if button_state:
         ev3.Sound.speak("Seeking " + COLOR_NAMES[color_to_seek]).wait()
 
-        # TODO: 3. Implement the task as stated in this module's initial comment block
+        # DONE: 3. Implement the task as stated in this module's initial comment block
         # It is recommended that you add to your Snatch3r class's constructor the color_sensor, as shown
         #   self.color_sensor = ev3.ColorSensor()
         #   assert self.color_sensor
         # Then here you can use a command like robot.color_sensor.color to check the value
-        robot.right_motor.speed = 600
-        robot.left_motor.speed = 600
         color_sensor = ev3.ColorSensor()
+        robot.go_forward(300, 300)
 
         while True:
             current_color = color_sensor.color
             time.sleep(0.01)
             if current_color == color_to_seek:
                 robot.stop()
-            break
+                break
         robot.stop()
 
 
