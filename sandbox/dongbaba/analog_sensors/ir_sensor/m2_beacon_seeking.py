@@ -9,8 +9,8 @@ function gets the robot to that location it will stop the robot and return.  Wit
 prompted if they want to find the beacon again (presumably you move it first) or quit.
 
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Enyi Dong.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 import traceback
 
 import ev3dev.ev3 as ev3
@@ -31,7 +31,8 @@ def main():
         while True:
             seek_beacon(robot)
 
-            # TODO: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
+            # DONE: 5. Save the result of the seek_beacon function (a
+            # bool), then use that value to only say "Found the
             # beacon" if the return value is True.  (i.e. don't say "Found the beacon" if the attempts was cancelled.)
             ev3.Sound.speak("Found the beacon")
 
@@ -56,10 +57,11 @@ def seek_beacon(robot):
       :rtype: bool
     """
 
-    # TODO: 2. Create a BeaconSeeker object on channel 1.
+    # DONE: 2. Create a BeaconSeeker object on channel 1.
 
     forward_speed = 300
     turn_speed = 100
+    beacon_seeker = ev3.BeaconSeeker(channel=1)
 
     while not robot.touch_sensor.is_pressed:
         # The touch sensor can be used to abort the attempt (sometimes handy during testing)
@@ -72,7 +74,7 @@ def seek_beacon(robot):
             print("IR Remote not found. Distance is -128")
             robot.stop()
         else:
-            # TODO: 4. Implement the following strategy to find the beacon.
+            # DONE: 4. Implement the following strategy to find the beacon.
             # If the absolute value of the current_heading is less than 2, you are on the right heading.
             #     If the current_distance is 0 return from this function, you have found the beacon!  return True
             #     If the current_distance is greater than 0 drive straight forward (forward_speed, forward_speed)
@@ -93,9 +95,30 @@ def seek_beacon(robot):
                 # Close enough of a heading to move forward
                 print("On the right heading. Distance: ", current_distance)
                 # You add more!
+                if math.fabs(current_heading) == 1:
+                    robot.drive_inches(4, forward_speed)
+                    robot.stop()
+                    time.sleep(0.01)
+                    print('found the beacon!')
+                    return True
+                if current_distance > 1:
+                    robot.go_forward(forward_speed, forward_speed)
+                    time.sleep(0.01)
 
+            if 2 < math.fabs(current_heading) < 10:
+                if current_heading < 0:
+                    robot.turn_left(turn_speed, turn_speed)
+                    time.sleep(0.1)
+                if current_heading > 0:
+                    robot.turn_right(turn_speed, turn_speed)
+                    time.sleep(0.1)
+                print("Adjusting heading: ", current_heading)
 
-
+            if math.fabs(current_heading) > 10:
+                robot.stop()
+                time.sleep(0.1)
+                print("Heading is too far off to fix: ", current_heading)
+                print("Heading too far off")
 
 
 
