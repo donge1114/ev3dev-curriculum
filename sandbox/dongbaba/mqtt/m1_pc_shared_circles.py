@@ -89,9 +89,9 @@ def main():
     # Create an MQTT connection
     # TODO: 5. Delete the line below (mqtt_client = None) then uncomment the code below.  It creates a real mqtt client.
     mqtt_client = None
-    # my_delegate = MyDelegate(canvas)
-    # mqtt_client = com.MqttClient(my_delegate)
-    # mqtt_client.connect("draw", "draw")
+    my_delegate = MyDelegate(canvas)
+    mqtt_client = com.MqttClient(my_delegate)
+    mqtt_client.connect("draw", "draw")
 
     root.mainloop()
 

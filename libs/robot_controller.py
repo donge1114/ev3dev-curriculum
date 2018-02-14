@@ -53,7 +53,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
-    def turn_degree(self, degree, speed):
+    def turn_degrees(self, degree, speed):
         """make the robot turn a certain degree at give speed """
         assert self.left_motor.connected
         assert self.right_motor.connected
