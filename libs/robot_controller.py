@@ -34,6 +34,7 @@ class Snatch3r(object):
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         assert self.pixy
 
+
     def drive_inches(self, distance, speed):
         """make the robot drive a given distane by a given speed, if the
         distance is negative, robot drive backward by the same speed."""
@@ -52,7 +53,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep().wait()
 
-    def turn_degree(self, degree, speed):
+    def turn_degrees(self, degree, speed):
         """make the robot turn a certain degree at give speed """
         assert self.left_motor.connected
         assert self.right_motor.connected
@@ -104,11 +105,14 @@ class Snatch3r(object):
     def shutdown(self):
         """make the robot shutdown when the ev3's backspace bottom is
         pressed. and the two led turn green"""
-        self.stop()
-        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-        ev3.Sound.speak('goodbye').wait()
-        print('Goodbye')
+        btn = ev3.Button()
+        while btn.backspace:
+            """do we need this while loop here?"""
+            self.stop()
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Sound.speak('goodbye').wait()
+            print('Goodbye')
 
     def go_forward(self, left_motor_speed, right_motor_speed):
         """make the robot run forward forever"""
@@ -138,7 +142,7 @@ class Snatch3r(object):
         self.left_motor.run_forever(speed_sp=-left_motor_speed)
         self.right_motor.run_forever(speed_sp=right_motor_speed)
 
-    def loop_forever(self):
+    def  loop_forever(self):
         while True:
             time.sleep(0.01)
 
