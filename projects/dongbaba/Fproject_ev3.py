@@ -12,32 +12,39 @@ class DataContainer(object):
 
 def main():
     robot = robo.Snatch3r()
+    dc = DataContainer()
+    white_level = 95
+    black_level = 5
     mqtt_client = com.MqttClient(robot)
     mqtt_client.connect_to_pc()
-    dc = DataContainer()
-    btn = ev3.Button()
-    btn.on_up = handle_up_button
-    btn.on_backspace = lambda state: handle_shutdown(state, dc)
-    while dc.running:
-        btn.process()
-        time.sleep(0.01)
-    print("Goodbye!")
-    ev3.Sound.speak("Goodbye").wait()
-
-
     robot.loop_forever()
-
-def handle_up_button(button_state):
-    if button_state:
-        print("Up button is pressed")
-        ev3.Sound.speak("Autonomous control begin")
-
-def handle_shutdown(button_state, dc):
-    if button_state:
-        print("back")
-        dc.running = False
+    while True:
+        if stop(robot, ev3.ColorSensor.COLOR_YELLOW) is True:
+            print("Auto start")
+            auto(robot, white_level, black_level)
+        if robot.ir_sensor.proximity == 4:
+            print('Start to go')
+            while not stop(robot, ev3.ColorSensor.COLOR_BLUE) is True:
+                robot.go_forward(300, 300)
 
 
+def auto(robot, white_level, black_level):
+    while not stop(robot, ev3.ColorSensor.COLOR_RED) is True:
+        if robot.color_sensor.reflected_light_intensity < black_level:
+            robot.go_back(300, 300)
+        if robot.color_sensor.reflected_light_intensity >= black_level:
+            robot.turn_right(100, 100)
+
+
+def stop(robot, color):
+    color_sensor = ev3.ColorSensor()
+    while True:
+        current_color = color_sensor.color
+        time.sleep(0.01)
+        if current_color == color:
+            robot.stop()
+            break
+    robot.stop()
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
