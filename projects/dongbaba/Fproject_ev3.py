@@ -30,9 +30,9 @@ def main():
 
 def auto(robot, white_level, black_level):
     while not stop(robot, ev3.ColorSensor.COLOR_RED) is True:
-        if robot.color_sensor.reflected_light_intensity < black_level:
+        if robot.color_sensor.reflected_light_intensity < white_level:
             robot.go_back(300, 300)
-        if robot.color_sensor.reflected_light_intensity >= black_level:
+        else:
             robot.turn_right(100, 100)
 
 
