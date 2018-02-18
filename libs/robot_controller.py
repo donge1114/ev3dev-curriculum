@@ -188,5 +188,18 @@ class Snatch3r(object):
         self.stop()
         return False
 
+    def play_music(self):
+        ev3.Sound.play("/home/robot/csse120/assets/sounds/L.wav")
+
+    def speak(self, string):
+        ev3.Sound.speak(string)
+
+    def dance(self, left_motor_speed, right_motor_speed):
+        self.turn_left(left_motor_speed, right_motor_speed)
+        self.arm_calibration()
+
+
+
+
 
 
