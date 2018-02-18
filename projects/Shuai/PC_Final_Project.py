@@ -100,7 +100,7 @@ def main():
 
     photo = tkinter.PhotoImage(file='FE.gif')
     button1 = ttk.Button(main_frame, image=photo)
-    button1['command'] = (lambda: beaken_seeking(mqtt_client))
+    button1['command'] = (lambda: find_beacon(mqtt_client))
     button1.image = photo
     button1.grid(row=0, column=4, rowspan=7)
 
@@ -151,9 +151,9 @@ def quit_program(mqtt_client, shutdown_ev3):
     exit()
 
 
-def beaken_seeking(mqtt_client):
+def find_beacon(mqtt_client):
     print("seek_beacon")
-    mqtt_client.send_message("seek_beacon")
+    mqtt_client.send_message("find_beacon")
 
 
 def music(mqtt_client):
