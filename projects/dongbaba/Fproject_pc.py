@@ -1,8 +1,12 @@
 import tkinter
 from tkinter import ttk
-
 import mqtt_remote_method_calls as com
+import ev3dev.ev3 as ev3
+import time
+import robot_controller as robo
+
 def main():
+    robot = robo.Snatch3r
 
     mqtt_client=com.MqttClient()
     mqtt_client.connect_to_ev3()
@@ -91,6 +95,7 @@ def main():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
+
     root.mainloop()
 
 def send_up(mqtt_client):
@@ -129,6 +134,8 @@ def quit_program(mqtt_client, shutdown_ev3):
         mqtt_client.send_message("shutdown")
     mqtt_client.close()
     exit()
+
+
 
 
 # ----------------------------------------------------------------------
