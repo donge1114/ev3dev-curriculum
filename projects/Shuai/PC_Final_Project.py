@@ -82,21 +82,17 @@ def main():
     string.grid(row=7, column=1, columnspan=2, sticky='w')
     var = tkinter.IntVar()
 
-    r1 = ttk.Radiobutton(main_frame, text="Dance", variable=var, value=1)
+    r1 = ttk.Radiobutton(main_frame, text="Speak", variable=var, value=1)
     r1.grid(row=8, column=0, sticky='w')
-    r1['command'] = (lambda: dance(mqtt_client, left_speed_entry, right_speed_entry))
+    r1['command'] = (lambda: speak(mqtt_client, string.get()))
 
-    r2 = ttk.Radiobutton(main_frame, text="Drive", variable=var, value=2)
+    r2 = ttk.Radiobutton(main_frame, text="Play", variable=var, value=2)
     r2.grid(row=9, column=0, sticky='w')
-    r2['command'] = (lambda: send_forward(mqtt_client, left_speed_entry, right_speed_entry))
+    r2['command'] = (lambda: music(mqtt_client))
 
-    r3 = ttk.Radiobutton(main_frame, text="Play music", variable=var, value=3)
+    r3 = ttk.Radiobutton(main_frame, text="Dance", variable=var, value=3)
     r3.grid(row=10, column=0, sticky='w')
-    r3['command'] = (lambda: music(mqtt_client))
-
-    r4 = ttk.Radiobutton(main_frame, text="Speak", variable=var, value=4)
-    r4.grid(row=11, column=0, sticky='w')
-    r4['command'] = (lambda: speak(mqtt_client, string.get()))
+    r3['command'] = (lambda: dance(mqtt_client, left_speed_entry, right_speed_entry))
 
     photo = tkinter.PhotoImage(file='FE.gif')
     button1 = ttk.Button(main_frame, image=photo)
