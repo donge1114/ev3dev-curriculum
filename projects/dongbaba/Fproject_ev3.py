@@ -17,16 +17,17 @@ def main():
     black_level = 5
     mqtt_client = com.MqttClient(robot)
     mqtt_client.connect_to_pc()
-    robot.loop_forever()
     while True:
         if stop(robot, ev3.ColorSensor.COLOR_YELLOW) is True:
             print("Auto start")
+            ev3.Sound.speak('Auto start').wait()
             auto(robot, white_level, black_level)
         if robot.ir_sensor.proximity == 4:
             print('Start to go')
+            ev3.Sound.speak('start to go').wait()
             while not stop(robot, ev3.ColorSensor.COLOR_BLUE) is True:
                 robot.go_forward(300, 300)
-
+    robot.loop_forever()
 
 def auto(robot, white_level, black_level):
     while not stop(robot, ev3.ColorSensor.COLOR_RED) is True:
