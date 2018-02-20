@@ -161,7 +161,7 @@ class Snatch3r(object):
 
                 if math.fabs(current_heading) < 2:
                     if current_distance == 1:
-                        self.drive_inches(3, forward_speed)
+                        self.drive_inches(4, forward_speed)
                         self.stop()
                         print("Found the beacon!")
                         return True
@@ -192,7 +192,12 @@ class Snatch3r(object):
         while True:
             found_beacon = self.seek_beacon()
             if found_beacon:
+                ev3.Sound.speak("I found the key")
                 self.arm_up()
+                ev3.Sound.speak("I got the key")
+            command = input("Hit enter to seek the beacon again or enter q to quit: ")
+            if command == "q":
+                break
 
     def play_music(self):
         ev3.Sound.play("/home/robot/csse120/assets/sounds/L.wav")
