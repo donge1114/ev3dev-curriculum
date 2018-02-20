@@ -78,7 +78,7 @@ def main():
     speak_label = ttk.Label(main_frame, text="Speak: ")
     speak_label.grid(row=7, column=0, sticky='w')
     string = ttk.Entry(main_frame, width=20)
-    string.insert(0, "Hello World")
+    string.insert(0, "Hello")
     string.grid(row=7, column=1, columnspan=2, sticky='w')
     var = tkinter.IntVar()
 
