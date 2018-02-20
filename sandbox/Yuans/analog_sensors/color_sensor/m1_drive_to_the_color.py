@@ -59,7 +59,8 @@ def main():
     # For our standard shutdown button.
     btn = ev3.Button()
     # DONE: 2. Uncomment the lines below to setup event handlers for these buttons.
-    btn.on_up = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_RED)
+    btn.on_up = lambda state: drive_to_color(state, robot,
+                                             ev3.ColorSensor.COLOR_YELLOW)
     btn.on_down = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_BLUE)
     btn.on_left = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_BLACK)
     btn.on_right = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_WHITE)
